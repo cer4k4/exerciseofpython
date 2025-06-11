@@ -1,19 +1,43 @@
 import json
 import csv
+import requests
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+class User(BaseModel):
+    name: str
+    family: str
+    age: int
+    address: str
+
+app = FastAPI()
 
 
-jsreq = '{"name":"ali","family":"karimi","age":26,"address":"tehran,dollab"}'
+@app.post("/user")
+async def registerUser(user: User):
+    userDict = {
+        'name':user.name,
+        'family':user.family,
+        'age':user.age,
+        'address':user.address
+    }
 
-y = json.dumps(jsreq)
-
-y = json.loads(jsreq)
-
-print(type(y))
+    return {"message": "user registered"}
 
 
+#jsreq = [{'name':'ali','family':'karimi','age':26,'address':'tehran,dollab'}]
 
-with open('my_data.csv',w,newline='') as file:
-    csvfieldsName = ['name','family','age','address']
-    writer = csv.DictWriter(file,)
-    writer.writeheader()
-    writer.writerows(y)
+def saveToCSVfile(user):
+    with open('my_data.csv','w') as file:
+        csvfieldsName = ['name','family','age','address']
+        writer = csv.DictWriter(file,fieldnames=csvfieldsName)
+        writer.writeheader()
+        writer.writerows(jsreq)
+
+
+
+
+@app.post("/test")
+async def test():
+    result = requests.get(url="https://dummyjson.com/products")
+    return result

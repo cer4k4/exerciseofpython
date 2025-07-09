@@ -39,6 +39,9 @@ elif "json" in result.headers.get("Content-Type"):
         else:
             fields.append(iterater)
     
+
+
+def saveToCSV(response):
     with open('my_data.csv', 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=fields)
         writer.writeheader()
@@ -53,5 +56,5 @@ elif "json" in result.headers.get("Content-Type"):
                 writer.writerow(single_row)
     
     print("Data successfully written")
-else:
-    print("Unsupported content type:", result.headers.get("Content-Type"))
+    # else:
+    #     print("Unsupported content type:", result.headers.get("Content-Type"))

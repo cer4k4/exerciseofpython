@@ -8,3 +8,5 @@ generator = testGenerator()
 comlist = [g for g in generator]
 
 print(comlist)
+
+

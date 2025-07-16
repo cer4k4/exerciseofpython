@@ -26,4 +26,3 @@ while True:
     word = input()
     encrypted = encrytion(word)
     print("encrypted ===>",encrypted,"<===","\n")
-    

@@ -1,0 +1,257 @@
+_id,ascii code,symbol,description
+68773d98ae71e08101ee9eb7,0,,(Null character)
+68773d98ae71e08101ee9eb8,1,SOH,(Start of Header)
+68773d98ae71e08101ee9eb9,2,STX,(Start of Text)
+68773d98ae71e08101ee9eba,3,ETX,(End of Text)
+68773d98ae71e08101ee9ebb,4,EOT,(End of Transmission)
+68773d98ae71e08101ee9ebc,5,ENQ,(Enquiry)
+68773d98ae71e08101ee9ebd,6,ACK,(Acknowledgement)
+68773d98ae71e08101ee9ebe,7,BEL,(Bell)
+68773d98ae71e08101ee9ebf,8,BS,(Backspace)
+68773d98ae71e08101ee9ec0,9,HT,(Horizontal Tab)
+68773d98ae71e08101ee9ec1,10,LF,(Line feed)
+68773d98ae71e08101ee9ec2,11,VT,(Vertical Tab)
+68773d98ae71e08101ee9ec3,12,FF,(Form feed)
+68773d98ae71e08101ee9ec4,13,CR,(Carriage return)
+68773d98ae71e08101ee9ec5,14,SO,(Shift Out)
+68773d98ae71e08101ee9ec6,15,SI,(Shift In)
+68773d98ae71e08101ee9ec7,16,DLE,(Data link escape)
+68773d98ae71e08101ee9ec8,17,DC1,(Device control 1)
+68773d98ae71e08101ee9ec9,18,DC2,(Device control 2)
+68773d98ae71e08101ee9eca,19,DC3,(Device control 3)
+68773d98ae71e08101ee9ecb,20,DC4,(Device control 4)
+68773d98ae71e08101ee9ecc,21,NAK,(Negative acknowledgement)
+68773d98ae71e08101ee9ecd,22,SYN,(Synchronous idle)
+68773d98ae71e08101ee9ece,23,ETB,(End of transmission block)
+68773d98ae71e08101ee9ecf,24,CAN,(Cancel)
+68773d98ae71e08101ee9ed0,25,EM,(End of medium)
+68773d98ae71e08101ee9ed1,26,SUB,(Substitute)
+68773d98ae71e08101ee9ed2,27,ESC,(Escape)
+68773d98ae71e08101ee9ed3,28,FS,(File separator)
+68773d98ae71e08101ee9ed4,29,GS,(Group separator)
+68773d98ae71e08101ee9ed5,30,RS,(Record separator)
+68773d98ae71e08101ee9ed6,31,US,(Unit separator)
+68773d98ae71e08101ee9ed7,32, ,(Space)
+68773d98ae71e08101ee9ed8,33,!,(Exclamation mark)
+68773d98ae71e08101ee9ed9,34,"""",(Quotation mark ; quotes)
+68773d98ae71e08101ee9eda,35,#,(Number sign)
+68773d98ae71e08101ee9edb,36,$,(Dollar sign)
+68773d98ae71e08101ee9edc,37,%,(Percent sign)
+68773d98ae71e08101ee9edd,38,&,(Ampersand)
+68773d98ae71e08101ee9ede,39,',(Apostrophe)
+68773d98ae71e08101ee9edf,40,(,(round brackets or parentheses)
+68773d98ae71e08101ee9ee0,41,),(round brackets or parentheses)
+68773d98ae71e08101ee9ee1,42,*,(Asterisk)
+68773d98ae71e08101ee9ee2,43,+,(Plus sign)
+68773d98ae71e08101ee9ee3,44,",",(Comma)
+68773d98ae71e08101ee9ee4,45,-,(Hyphen)
+68773d98ae71e08101ee9ee5,46,.,"(Dot , full stop)"
+68773d98ae71e08101ee9ee6,47,/,(Slash)
+68773d98ae71e08101ee9ee7,48,0,(number zero)
+68773d98ae71e08101ee9ee8,49,1,(number one)
+68773d98ae71e08101ee9ee9,50,2,(number two)
+68773d98ae71e08101ee9eea,51,3,(number three)
+68773d98ae71e08101ee9eeb,52,4,(number four)
+68773d98ae71e08101ee9eec,53,5,(number five)
+68773d98ae71e08101ee9eed,54,6,(number six)
+68773d98ae71e08101ee9eee,55,7,(number seven)
+68773d98ae71e08101ee9eef,56,8,(number eight)
+68773d98ae71e08101ee9ef0,57,9,(number nine)
+68773d98ae71e08101ee9ef1,58,:,(Colon)
+68773d98ae71e08101ee9ef2,59,;,(Semicolon)
+68773d98ae71e08101ee9ef3,60,<,(Less-than sign)
+68773d98ae71e08101ee9ef4,61,=,(Equals sign)
+68773d98ae71e08101ee9ef5,62,>,(Greater-than sign ; Inequality) 
+68773d98ae71e08101ee9ef6,63,?,(Question mark)
+68773d98ae71e08101ee9ef7,64,@,(At sign)
+68773d98ae71e08101ee9ef8,65,A,(Capital A)
+68773d98ae71e08101ee9ef9,66,B,(Capital B)
+68773d98ae71e08101ee9efa,67,C,(Capital C)
+68773d98ae71e08101ee9efb,68,D,(Capital D)
+68773d98ae71e08101ee9efc,69,E,(Capital E)
+68773d98ae71e08101ee9efd,70,F,(Capital F)
+68773d98ae71e08101ee9efe,71,G,(Capital G)
+68773d98ae71e08101ee9eff,72,H,(Capital H)
+68773d98ae71e08101ee9f00,73,I,(Capital I)
+68773d98ae71e08101ee9f01,74,J,(Capital J)
+68773d98ae71e08101ee9f02,75,K,(Capital K)
+68773d98ae71e08101ee9f03,76,L,(Capital L)
+68773d98ae71e08101ee9f04,77,M,(Capital M)
+68773d98ae71e08101ee9f05,78,N,(Capital N)
+68773d98ae71e08101ee9f06,79,O,(Capital O)
+68773d98ae71e08101ee9f07,80,P,(Capital P)
+68773d98ae71e08101ee9f08,81,Q,(Capital Q)
+68773d98ae71e08101ee9f09,82,R,(Capital R)
+68773d98ae71e08101ee9f0a,83,S,(Capital S)
+68773d98ae71e08101ee9f0b,84,T,(Capital T)
+68773d98ae71e08101ee9f0c,85,U,(Capital U)
+68773d98ae71e08101ee9f0d,86,V,(Capital V)
+68773d98ae71e08101ee9f0e,87,W,(Capital W)
+68773d98ae71e08101ee9f0f,88,X,(Capital X)
+68773d98ae71e08101ee9f10,89,Y,(Capital Y)
+68773d98ae71e08101ee9f11,90,Z,(Capital Z)
+68773d98ae71e08101ee9f12,91,[,(square brackets or box brackets)
+68773d98ae71e08101ee9f13,92,\,(Backslash)
+68773d98ae71e08101ee9f14,93,],(square brackets or box brackets)
+68773d98ae71e08101ee9f15,94,^,(Caret or circumflex accent)
+68773d98ae71e08101ee9f16,95,_,"(underscore , understrike , underbar or low line)"
+68773d98ae71e08101ee9f17,96,`,(Grave accent)
+68773d98ae71e08101ee9f18,97,a,(Lowercase  a )
+68773d98ae71e08101ee9f19,98,b,(Lowercase  b )
+68773d98ae71e08101ee9f1a,99,c,(Lowercase  c )
+68773d98ae71e08101ee9f1b,100,d,(Lowercase  d )
+68773d98ae71e08101ee9f1c,101,e,(Lowercase  e )
+68773d98ae71e08101ee9f1d,102,f,(Lowercase  f )
+68773d98ae71e08101ee9f1e,103,g,(Lowercase  g )
+68773d98ae71e08101ee9f1f,104,h,(Lowercase  h )
+68773d98ae71e08101ee9f20,105,i,(Lowercase  i )
+68773d98ae71e08101ee9f21,106,j,(Lowercase  j )
+68773d98ae71e08101ee9f22,107,k,(Lowercase  k )
+68773d98ae71e08101ee9f23,108,l,(Lowercase  l )
+68773d98ae71e08101ee9f24,109,m,(Lowercase  m )
+68773d98ae71e08101ee9f25,110,n,(Lowercase  n )
+68773d98ae71e08101ee9f26,111,o,(Lowercase  o )
+68773d98ae71e08101ee9f27,112,p,(Lowercase  p )
+68773d98ae71e08101ee9f28,113,q,(Lowercase  q )
+68773d98ae71e08101ee9f29,114,r,(Lowercase  r )
+68773d98ae71e08101ee9f2a,115,s,(Lowercase  s )
+68773d98ae71e08101ee9f2b,116,t,(Lowercase  t )
+68773d98ae71e08101ee9f2c,117,u,(Lowercase  u )
+68773d98ae71e08101ee9f2d,118,v,(Lowercase  v )
+68773d98ae71e08101ee9f2e,119,w,(Lowercase  w )
+68773d98ae71e08101ee9f2f,120,x,(Lowercase  x )
+68773d98ae71e08101ee9f30,121,y,(Lowercase  y )
+68773d98ae71e08101ee9f31,122,z,(Lowercase  z )
+68773d98ae71e08101ee9f32,123,{,(curly brackets or braces)
+68773d98ae71e08101ee9f33,124,|,"(vertical-bar, vbar, vertical line or vertical slash)"
+68773d98ae71e08101ee9f34,125,},(curly brackets or braces)
+68773d98ae71e08101ee9f35,126,~,(Tilde ; swung dash)
+68773d98ae71e08101ee9f36,127,DEL,(Delete)
+68773d98ae71e08101ee9f37,128,Ç,(Majuscule C-cedilla)
+68773d98ae71e08101ee9f38,129,ü,"(letter ""u"" with umlaut or diaeresis ; ""u-umlaut"")"
+68773d98ae71e08101ee9f39,130,é,"(letter ""e"" with acute accent or ""e-acute"")"
+68773d98ae71e08101ee9f3a,131,â,"(letter ""a"" with circumflex accent or ""a-circumflex"")"
+68773d98ae71e08101ee9f3b,132,ä,"(letter ""a"" with umlaut or diaeresis ; ""a-umlaut"")"
+68773d98ae71e08101ee9f3c,133,à,"(letter ""a"" with grave accent)"
+68773d98ae71e08101ee9f3d,134,å,"(letter ""a""  with a ring)"
+68773d98ae71e08101ee9f3e,135,ç,(Minuscule c-cedilla)
+68773d98ae71e08101ee9f3f,136,ê,"(letter ""e"" with circumflex accent or ""e-circumflex"")"
+68773d98ae71e08101ee9f40,137,ë,"(letter ""e"" with umlaut or diaeresis ; ""e-umlaut"")"
+68773d98ae71e08101ee9f41,138,è,"(letter ""e"" with grave accent)"
+68773d98ae71e08101ee9f42,139,ï,"(letter ""i"" with umlaut or diaeresis ; ""i-umlaut"")"
+68773d98ae71e08101ee9f43,140,î,"(letter ""i"" with circumflex accent or ""i-circumflex"")"
+68773d98ae71e08101ee9f44,141,ì,"(letter ""i"" with grave accent)"
+68773d98ae71e08101ee9f45,142,Ä,"(letter ""A"" with umlaut or diaeresis ; ""A-umlaut"")"
+68773d98ae71e08101ee9f46,143,Å,"(Capital letter ""A""  with a ring)"
+68773d98ae71e08101ee9f47,144,É,"(Capital letter ""E"" with acute accent or ""E-acute"")"
+68773d98ae71e08101ee9f48,145,æ,"(Latin diphthong ""ae"" in lowercase)"
+68773d98ae71e08101ee9f49,146,Æ,"(Latin diphthong ""AE"" in uppercase)"
+68773d98ae71e08101ee9f4a,147,ô,"(letter ""o"" with circumflex accent or ""o-circumflex"")"
+68773d98ae71e08101ee9f4b,148,ö,"(letter ""o"" with umlaut or diaeresis ; ""o-umlaut"")"
+68773d98ae71e08101ee9f4c,149,ò,"(letter ""o"" with grave accent)"
+68773d98ae71e08101ee9f4d,150,û,"(letter ""u"" with circumflex accent or ""u-circumflex"")"
+68773d98ae71e08101ee9f4e,151,ù,"(letter ""u"" with grave accent)"
+68773d98ae71e08101ee9f4f,152,ÿ,"(Lowercase letter ""y"" with diaeresis)"
+68773d98ae71e08101ee9f50,153,Ö,"(letter ""O"" with umlaut or diaeresis ; ""O-umlaut"")"
+68773d98ae71e08101ee9f51,154,Ü,"(letter ""U"" with umlaut or diaeresis ; ""U-umlaut"")"
+68773d98ae71e08101ee9f52,155,ø,(slashed zero or empty set)
+68773d98ae71e08101ee9f53,156,£,(Pound sign ; symbol for the pound sterling)
+68773d98ae71e08101ee9f54,157,Ø,(slashed zero or empty set)
+68773d98ae71e08101ee9f55,158,×,(multiplication sign)
+68773d98ae71e08101ee9f56,159,ƒ,(function sign ; f with hook sign ; florin sign )
+68773d98ae71e08101ee9f57,160,á,"(letter ""a"" with acute accent or ""a-acute"")"
+68773d98ae71e08101ee9f58,161,í,"(letter ""i"" with acute accent or ""i-acute"")"
+68773d98ae71e08101ee9f59,162,ó,"(letter ""o"" with acute accent or ""o-acute"")"
+68773d98ae71e08101ee9f5a,163,ú,"(letter ""u"" with acute accent or ""u-acute"")"
+68773d98ae71e08101ee9f5b,164,ñ,"(letter ""n"" with tilde ; enye)"
+68773d98ae71e08101ee9f5c,165,Ñ,"(letter ""N"" with tilde ; enye)"
+68773d98ae71e08101ee9f5d,166,ª,(feminine ordinal indicator)
+68773d98ae71e08101ee9f5e,167,º,(masculine ordinal indicator)
+68773d98ae71e08101ee9f5f,168,¿,(Inverted question marks)
+68773d98ae71e08101ee9f60,169,®,(Registered trademark symbol)
+68773d98ae71e08101ee9f61,170,¬,(Logical negation symbol)
+68773d98ae71e08101ee9f62,171,½,(One half)
+68773d98ae71e08101ee9f63,172,¼,(Quarter or  one fourth)
+68773d98ae71e08101ee9f64,173,¡,(Inverted exclamation marks)
+68773d98ae71e08101ee9f65,174,«,(Angle quotes or guillemets)
+68773d98ae71e08101ee9f66,175,»,(Guillemets or  angle quotes)
+68773d98ae71e08101ee9f67,176,░,
+68773d98ae71e08101ee9f68,177,▒,
+68773d98ae71e08101ee9f69,178,▓,
+68773d98ae71e08101ee9f6a,179,│,(Box drawing character)
+68773d98ae71e08101ee9f6b,180,┤,(Box drawing character)
+68773d98ae71e08101ee9f6c,181,Á,"(Capital letter ""A"" with acute accent or ""A-acute"")"
+68773d98ae71e08101ee9f6d,182,Â,"(letter ""A"" with circumflex accent or ""A-circumflex"")"
+68773d98ae71e08101ee9f6e,183,À,"(letter ""A"" with grave accent)"
+68773d98ae71e08101ee9f6f,184,©,(Copyright symbol)
+68773d98ae71e08101ee9f70,185,╣,(Box drawing character)
+68773d98ae71e08101ee9f71,186,║,(Box drawing character)
+68773d98ae71e08101ee9f72,187,╗,(Box drawing character)
+68773d98ae71e08101ee9f73,188,╝,(Box drawing character)
+68773d98ae71e08101ee9f74,189,¢,(Cent symbol)
+68773d98ae71e08101ee9f75,190,¥,(YEN and YUAN sign)
+68773d98ae71e08101ee9f76,191,┐,(Box drawing character)
+68773d98ae71e08101ee9f77,192,└,(Box drawing character)
+68773d98ae71e08101ee9f78,193,┴,(Box drawing character)
+68773d98ae71e08101ee9f79,194,┬,(Box drawing character)
+68773d98ae71e08101ee9f7a,195,├,(Box drawing character)
+68773d98ae71e08101ee9f7b,196,─,(Box drawing character)
+68773d98ae71e08101ee9f7c,197,┼,(Box drawing character)
+68773d98ae71e08101ee9f7d,198,ã,"(Lowercase letter ""a"" with tilde or ""a-tilde"")"
+68773d98ae71e08101ee9f7e,199,Ã,"(Capital letter ""A"" with tilde or ""A-tilde"")"
+68773d98ae71e08101ee9f7f,200,╚,(Box drawing character)
+68773d98ae71e08101ee9f80,201,╔,(Box drawing character)
+68773d98ae71e08101ee9f81,202,╩,(Box drawing character)
+68773d98ae71e08101ee9f82,203,╦,(Box drawing character)
+68773d98ae71e08101ee9f83,204,╠,(Box drawing character)
+68773d98ae71e08101ee9f84,205,═,(Box drawing character)
+68773d98ae71e08101ee9f85,206,╬,(Box drawing character)
+68773d98ae71e08101ee9f86,207,¤,(generic currency sign)
+68773d98ae71e08101ee9f87,208,ð,"(Lowercase letter ""eth"")"
+68773d98ae71e08101ee9f88,209,Ð,"(Capital letter ""Eth"")"
+68773d98ae71e08101ee9f89,210,Ê,"(letter ""E"" with circumflex accent or ""E-circumflex"")"
+68773d98ae71e08101ee9f8a,211,Ë,"(letter ""E"" with umlaut or diaeresis ; ""E-umlaut"")"
+68773d98ae71e08101ee9f8b,212,È,"(letter ""E"" with grave accent)"
+68773d98ae71e08101ee9f8c,213,ı,(lowercase dot less i)
+68773d98ae71e08101ee9f8d,214,Í,"(Capital letter ""I"" with acute accent or ""I-acute"")"
+68773d98ae71e08101ee9f8e,215,Î,"(letter ""I"" with circumflex accent or ""I-circumflex"")"
+68773d98ae71e08101ee9f8f,216,Ï,"(letter ""I"" with umlaut or diaeresis ; ""I-umlaut"")"
+68773d98ae71e08101ee9f90,217,┘,(Box drawing character)
+68773d98ae71e08101ee9f91,218,┌,(Box drawing character)
+68773d98ae71e08101ee9f92,219,█,(Block)
+68773d98ae71e08101ee9f93,220,▄,(Bottom half block)
+68773d98ae71e08101ee9f94,221,¦,(vertical broken bar)
+68773d98ae71e08101ee9f95,222,Ì,"(letter ""I"" with grave accent)"
+68773d98ae71e08101ee9f96,223,▀,(Top half block)
+68773d98ae71e08101ee9f97,224,Ó,"(Capital letter ""O"" with acute accent or ""O-acute"")"
+68773d98ae71e08101ee9f98,225,ß,"(letter ""Eszett"" ; ""scharfes S"" or ""sharp S"")"
+68773d98ae71e08101ee9f99,226,Ô,"(letter ""O"" with circumflex accent or ""O-circumflex"")"
+68773d98ae71e08101ee9f9a,227,Ò,"(letter ""O"" with grave accent)"
+68773d98ae71e08101ee9f9b,228,õ,"(letter ""o"" with tilde or ""o-tilde"")"
+68773d98ae71e08101ee9f9c,229,Õ,"(letter ""O"" with tilde or ""O-tilde"")"
+68773d98ae71e08101ee9f9d,230,µ,"(Lowercase letter ""Mu"" ; micro sign or micron)"
+68773d98ae71e08101ee9f9e,231,þ,"(Lowercase letter ""Thorn"")"
+68773d98ae71e08101ee9f9f,232,Þ,"(Capital letter ""thorn"")"
+68773d98ae71e08101ee9fa0,233,Ú,"(Capital letter ""U"" with acute accent or ""U-acute"")"
+68773d98ae71e08101ee9fa1,234,Û,"(letter ""U"" with circumflex accent or ""U-circumflex"")"
+68773d98ae71e08101ee9fa2,235,Ù,"(letter ""U"" with grave accent)"
+68773d98ae71e08101ee9fa3,236,ý,"(Lowercase letter ""y"" with acute accent)"
+68773d98ae71e08101ee9fa4,237,Ý,"(Capital letter ""Y"" with acute accent)"
+68773d98ae71e08101ee9fa5,238,¯,(macron symbol)
+68773d98ae71e08101ee9fa6,239,´,(Acute accent)
+68773d98ae71e08101ee9fa7,240,­,(Hyphen)
+68773d98ae71e08101ee9fa8,241,±,(Plus-minus sign)
+68773d98ae71e08101ee9fa9,242,‗,(underline or underscore)
+68773d98ae71e08101ee9faa,243,¾,(three quarters)
+68773d98ae71e08101ee9fab,244,¶,(paragraph sign or pilcrow)
+68773d98ae71e08101ee9fac,245,§,(Section sign)
+68773d98ae71e08101ee9fad,246,÷,(The division sign ; Obelus)
+68773d98ae71e08101ee9fae,247,¸,(cedilla)
+68773d98ae71e08101ee9faf,248,°,(degree symbol )
+68773d98ae71e08101ee9fb0,249,¨,(Diaeresis)
+68773d98ae71e08101ee9fb1,250,·,(Interpunct or space dot)
+68773d98ae71e08101ee9fb2,251,¹,(superscript one)
+68773d98ae71e08101ee9fb3,252,³,(cube or superscript three)
+68773d98ae71e08101ee9fb4,253,²,(Square or superscript two)
+68773d98ae71e08101ee9fb5,254,■,(black square)
+68773d98ae71e08101ee9fb6,255,nbsp,(non-breaking space or no-break space)

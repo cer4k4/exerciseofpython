@@ -1,11 +1,11 @@
 class Person:
-    """ Hi this is a first class"""
-    def __init__(self,name,age):
-        self.name = name
-        self.age = age
+  def __init__(self, name, age):
+    self.name = name
+    self.age = age
 
-    def showInfo(self):
-        print("Name:",self.name,"\nAge:",self.age)
+  def __str__(self):
+    return f"{self.name}({self.age})"    
 
-p = Person("ali",26)
-print(p.showInfo)
+p1 = Person("John", 36)
+
+print(type(p1))

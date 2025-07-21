@@ -1,0 +1,25 @@
+numpy
+aniso8601
+Cerberus
+# cerberus
+# windows-curses
+certifi
+click
+colorama
+elasticsearch
+Flask
+Flask-Cors
+Flask-RESTful
+itsdangerous
+Jinja2
+jsonify
+MarkupSafe
+pytz
+six
+urllib3
+Werkzeug
+pandas
+requests
+pygeohash
+jdatetime
+pymongo

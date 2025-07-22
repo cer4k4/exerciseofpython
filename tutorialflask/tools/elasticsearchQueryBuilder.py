@@ -12,10 +12,7 @@ myConf = Configer()
 # from elasticsearchquerygenerator.elasticsearchquerygenerator import ElasticSearchQuery
 
 TOPICS = {
-    "user", "adabi", "amniati", "amozeshi", "eghtesadi", "ejtemaee", "farhangi", "elmi",
-    "filmocinema", "fun", "havades", "honari", "mazhabi", "mokhadderoalkol", "mostahjan",
-    "music", "nezami", "pezeshki", "romanodastan", "siasi", "tabiatvahava", "tablighofrosh",
-    "tarikhi", "varzeshi"
+    "user"
 }
 
 BEHAVIORALS = {
@@ -829,7 +826,6 @@ class ElasticSearchQueryBuilder():
         return self.body
 
     def get_geo_polygon(self, timestamps, _category, geo, size=10):
-
         self.body["size"] = size
         self.body_filter.append(
             {
@@ -844,7 +840,6 @@ class ElasticSearchQueryBuilder():
         return self.body
 
     def get_geo_location(self, timestamps, _category, geo, size=10):
-
         location = None
         field_path = None
 
@@ -857,7 +852,6 @@ class ElasticSearchQueryBuilder():
         elif geo.get("city"):
             field_path = "location_finder.city.keyword"
             location = geo.get("city")
-
         self.body["size"] = size
         lst = [{"term": {field_path: location[i]}}
                for i in range(len(location))]
@@ -866,10 +860,8 @@ class ElasticSearchQueryBuilder():
         return self.body
 
     def get_geo_location_new(self, geo, size=10):
-
         location = None
         field_path = None
-
         if geo.get("country"):
             field_path = "location_finder.country.keyword"
             location = geo.get("country")

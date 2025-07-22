@@ -931,9 +931,18 @@ from flask_restful import Resource
 
 
 class RegisterUser(Resource):
-    def post(self):
+    def get(self):
         return {
-            "name":"RegisterUser"
+            "name":"get RegisterUser"
+        }
+    def post(self):
+        print(self.ali())
+        return {
+            "name":"post RegisterUser"
+        }
+    def ali(self):
+        return {
+            "name":"put RegisterUser"
         }
     
 

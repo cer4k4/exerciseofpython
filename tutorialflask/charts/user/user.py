@@ -1,7 +1,56 @@
 #import copy
-
-#from flask import request, jsonify
+from flask import request, jsonify
 from flask_restful import Resource
+from tools.elastic import ConnectionElasticsearch
+import uuid
+from datetime import datetime
+elsmanager = ConnectionElasticsearch()
+userschema = "users"
+logschema = "users-logs"
+class RegisterUser(Resource):
+    def post(self):
+        raw_data = request.get_json()
+        user_id = str(uuid.uuid4())
+        user_doc = {
+            "name": raw_data["name"],
+            "phone_number": raw_data["phone_number"],
+            "age": raw_data["age"],
+            "password":raw_data["password"],
+            "registered_at": datetime.now().isoformat(),
+            "status": True
+        }
+        result = elsmanager.insert_document(index=userschema, doc_id=user_id, body=user_doc)
+        print(result)
+        return {
+            "id": user_id
+        }
+    
+
+class UserLogin(Resource):
+    def post(self):
+        raw_data = request.get_json()
+        user_id = str(uuid.uuid4())
+  
+        getUserFromDB = elsmanager.get_data(userschema,"phone_number",raw_data["phone_number"])
+        for g in getUserFromDB["hits"]["hits"]:
+            if g["_source"]:
+                if validatepassword(raw_data["password"],g["_source"]["password"]):
+                    user_doc = {
+                        "uuid": g["_source"]["uuid"],
+                        "login_at": datetime.now().isoformat()
+                    }
+                    elsmanager.insert_document(index=logschema, doc_id=user_id, body=user_doc)
+                    return {"status":"successful"}
+                else:
+                    return {"status":"password invalid"}
+    
+
+def validatepassword(password,dbpassword):
+    if password != dbpassword:
+        return False
+    return True
+
+
 
 #from tools.cerberus_validator import schema_validator_cerberus
 #from tools.elasticsearchQueryBuilder import ElasticSearchQueryBuilder, TOPICS, BEHAVIORALS
@@ -798,7 +847,7 @@ from flask_restful import Resource
 #         # Remove none Value from args
 #         remove_none_value(no_none_args)
 #         # validation arguments by cerberus lib.
-#         res = schema_validator_cerberus(no_none_args, user_schema)
+#         res =  s(no_none_args, user_schema)
 #         valid_args = res["final_document"]
 #         if not res["errors"]:
 #             platforms = extract_platforms(valid_args)
@@ -930,25 +979,3 @@ from flask_restful import Resource
 #         return output
 
 
-class RegisterUser(Resource):
-    def get(self):
-        return {
-            "name":"get RegisterUser"
-        }
-    def post(self):
-        print(self.ali())
-        return {
-            "name":"post RegisterUser"
-        }
-    def ali(self):
-        return {
-            "name":"put RegisterUser"
-        }
-    
-
-class UserLogin(Resource):
-    def post(self):
-        return {
-            "name":"UserLogin"
-        }
-    

@@ -52,5 +52,16 @@ class ConnectionElasticsearch(object):
         except Exception as e:
             print(f"Elasticsearch index error: {e}")
             return None
-        
+    
+    def count_of_index(self,index,feild,mindate,maxdate):
+            query = {
+                "range": {
+                    feild: {
+                        "gte":mindate,
+                        "lte":maxdate
+                    }
+                }
+            }
+            result = self.es.count(index=index,query=query)
+            return result
     

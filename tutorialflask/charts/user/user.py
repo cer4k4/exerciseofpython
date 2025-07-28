@@ -7,9 +7,18 @@ from datetime import datetime
 elsmanager = ConnectionElasticsearch()
 userschema = "users"
 logschema = "users-logs"
+errors = {
+    "phone_registered": "another user registered with this phone number",
+    "uuid": "uuid is not valid"
+}
 class RegisterUser(Resource):
     def post(self):
         raw_data = request.get_json()
+        user = elsmanager.get_data_by_filter(index=userschema, filter="phone_number",val=raw_data["phone_number"])
+        if uuidvalidation(user,"_id"):
+            return{
+                "error": errors["phone_registered"]
+            }
         user_id = str(uuid.uuid4())
         user_doc = {
             "name": raw_data["name"],
@@ -25,33 +34,68 @@ class RegisterUser(Resource):
             "id": user_id
         }
     
-
-class UserLogin(Resource):
-    def post(self):
+class GetUser(Resource):
+    def get(self):
         raw_data = request.get_json()
-        user_id = str(uuid.uuid4())
-  
-        getUserFromDB = elsmanager.get_data(userschema,"phone_number",raw_data["phone_number"])
-        for g in getUserFromDB["hits"]["hits"]:
-            if g["_source"]:
-                if validatepassword(raw_data["password"],g["_source"]["password"]):
-                    user_doc = {
-                        "uuid": g["_source"]["uuid"],
-                        "login_at": datetime.now().isoformat()
-                    }
-                    elsmanager.insert_document(index=logschema, doc_id=user_id, body=user_doc)
-                    return {"status":"successful"}
-                else:
-                    return {"status":"password invalid"}
+        user = elsmanager.get_data_by_filter(index=userschema, filter="_id",val=raw_data["uuid"])
+        return {
+            "user": user
+        }
     
+class GetUsers(Resource):
+    def get(self):
+        users = elsmanager.get_documents(index=userschema)
+        return {
+            "users": users
+        }
 
-def validatepassword(password,dbpassword):
-    if password != dbpassword:
-        return False
-    return True
+class UpdateUser(Resource):
+    def put(self):
+        inputbody = request.get_json()
+        userdb = elsmanager.get_data_by_filter(index=userschema,filter="_id",val=inputbody["uuid"])
+        # check exist user
+        if uuidvalidation(userdb,"_id"):
+            # check duplicate phone number
+            if not validationuserfields(userdb,"_source","phone_number",inputbody["phone_number"]):
+                anotheruserdb = elsmanager.get_data_by_filter(index=userschema,filter="phone_number",val=inputbody["phone_number"])
+                if uuidvalidation(anotheruserdb,"_id"):
+                    if giveuuid(anotheruserdb) != giveuuid(userdb):
+                        return {
+                            "error": errors["phone_registered"]
+                        }
+            user_doc = {
+                "name": inputbody["name"],
+                "phone_number": inputbody["phone_number"],
+                "age": inputbody["age"],
+                "password":inputbody["password"],
+                "updated_at": datetime.now().isoformat(),
+            }
+            result = elsmanager.update_document(index=userschema, id=inputbody["uuid"], doc=user_doc)        
+            return {
+                "status": result["result"]
+            }
+        return {
+               "error": errors["uuid"]
+        }
 
+def uuidvalidation(user,key):
+    for g in user["hits"]["hits"]:
+        if g[key]:
+                return True
+    return False
 
+def validationuserfields(user,key,subkey,phone):
+    for g in user["hits"]["hits"]:
+        if g[key][subkey]:
+            if g[key][subkey] == phone:
+                return True
+    return False
 
+def giveuuid(user):
+    for g in user["hits"]["hits"]:
+        if g["_id"]:
+            return g["_id"]
+    return ""
 #from tools.cerberus_validator import schema_validator_cerberus
 #from tools.elasticsearchQueryBuilder import ElasticSearchQueryBuilder, TOPICS, BEHAVIORALS
 #from tools.inputSchema import InputSchema

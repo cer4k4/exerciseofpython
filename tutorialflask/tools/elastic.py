@@ -1,8 +1,10 @@
 import urllib3
 from config import configer
 #from datetime import datetime, timedelta
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch,ElasticsearchWarning
+import warnings
 
+warnings.filterwarnings("ignore", category=ElasticsearchWarning)
 
 urllib3.disable_warnings()
 
@@ -32,7 +34,7 @@ class ConnectionElasticsearch(object):
             self.request_timeout = int(myConfig.get("es", "request_timeout"))
             self.current_index = None
 
-    def get_data(self, index, filter,val):
+    def get_data_by_filter(self, index, filter,val):
         query = {
             "query": {
                 "term": {
@@ -52,7 +54,7 @@ class ConnectionElasticsearch(object):
         except Exception as e:
             print(f"Elasticsearch index error: {e}")
             return None
-    
+        
     def count_of_index(self,index,feild,mindate,maxdate):
             query = {
                 "range": {
@@ -64,4 +66,10 @@ class ConnectionElasticsearch(object):
             }
             result = self.es.count(index=index,query=query)
             return result
+        
+    def update_document(self,index,id,doc):
+        return self.es.index(index=index,id=id,body=doc)
+    
+    def get_documnets(self,index):
+        pass
     

@@ -70,6 +70,46 @@ class ConnectionElasticsearch(object):
     def update_document(self,index,id,doc):
         return self.es.index(index=index,id=id,body=doc)
     
-    def get_documnets(self,index):
-        pass
-    
+    def get_documents(self,index,feild,val,page,size):
+        if feild is None:
+            query = {
+                "from":page,
+                "size":size
+            }
+            result = self.es.search(index=index,body=query)
+            return result["hits"]["hits"]
+        if type(val) == int:
+            query = {
+                "from":page,
+                "size":size,
+                "query": {
+                    "match":{
+                        feild:val
+                    }
+                }
+            }
+            result = self.es.search(index=index,body=query)
+            return result["hits"]["hits"]
+        if type(val) == str:
+            query = {
+                "from":page,
+                "size":size,
+                "query": {
+                    "regexp":{
+                        feild: f".*{val}.*"
+                    }
+                }
+            }
+            result = self.es.search(index=index,body=query)
+            return result["hits"]["hits"]
+        
+    def delete_document(self,index,id):
+        try:
+            result = self.es.delete(index=index,id=id)
+            return result["result"]
+        except Exception as e:
+            print(f"Elasticsearch index error: {e}")
+            return e.__dict__["body"]["result"]
+            
+            
+        

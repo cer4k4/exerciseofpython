@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from config.configer import Configer
 from charts.user.logs import HistoryLogs,UserLogin
-from charts.user.user import RegisterUser,UpdateUser
+from charts.user.user import *
 
 myConf = Configer()
 
@@ -20,14 +20,20 @@ cors = CORS(app, resource={
 # route
 register_user = myConf.get("user", "register_user")
 update_user = myConf.get("user","update_user")
-
+users = myConf.get("user","get_list_users")
+user = myConf.get("user","get_user")
+delete_user = myConf.get("user","delete_user")
 login = myConf.get("user", "login")
 chart  = myConf.get("chart_name", "users_logs")
 
 # User
 api.add_resource(RegisterUser, register_user)
+api.add_resource(GetUsers,users)
+api.add_resource(GetUser,user)
 api.add_resource(UpdateUser, update_user)
-#Login
+api.add_resource(DeleteUser, delete_user)
+
+# Login
 api.add_resource(UserLogin, login)
 api.add_resource(HistoryLogs, chart)
 

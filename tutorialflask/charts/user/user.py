@@ -39,12 +39,15 @@ class GetUser(Resource):
         raw_data = request.get_json()
         user = elsmanager.get_data_by_filter(index=userschema, filter="_id",val=raw_data["uuid"])
         return {
-            "user": user
+            "user": user["hits"]["hits"][0]
         }
     
+# TODO: handle input body validation
 class GetUsers(Resource):
-    def get(self):
-        users = elsmanager.get_documents(index=userschema)
+    def post(self):
+        filterbody = request.get_json()
+        #users = elsmanager.get_documents(index=userschema,feild=None,val=None,page=filterbody["page"],size=filterbody["size"])
+        users = elsmanager.get_documents(index=userschema,feild=filterbody["field"],val=filterbody["value"],page=filterbody["page"],size=filterbody["size"])
         return {
             "users": users
         }
@@ -76,6 +79,14 @@ class UpdateUser(Resource):
             }
         return {
                "error": errors["uuid"]
+        }
+    
+class DeleteUser(Resource):
+    def delete(self):
+        inputbody = request.get_json()
+        result = elsmanager.delete_document(index=userschema, id=inputbody["uuid"])
+        return {
+            "status": result
         }
 
 def uuidvalidation(user,key):

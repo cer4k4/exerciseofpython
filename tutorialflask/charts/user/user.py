@@ -2,6 +2,8 @@
 from flask import request, jsonify
 from flask_restful import Resource
 from tools.elastic import ConnectionElasticsearch
+from tools.cerberus_validator import schema_validator_cerberus
+from tools.inputSchema import InputSchema
 import uuid
 from datetime import datetime
 elsmanager = ConnectionElasticsearch()
@@ -11,37 +13,43 @@ errors = {
     "phone_registered": "another user registered with this phone number",
     "uuid": "uuid is not valid"
 }
+
 class RegisterUser(Resource):
     def post(self):
-        raw_data = request.get_json()
-        user = elsmanager.get_data_by_filter(index=userschema, filter="phone_number",val=raw_data["phone_number"])
-        if uuidvalidation(user,"_id"):
-            return{
-                "error": errors["phone_registered"]
-            }
         user_id = str(uuid.uuid4())
-        user_doc = {
-            "name": raw_data["name"],
-            "phone_number": raw_data["phone_number"],
-            "age": raw_data["age"],
-            "password":raw_data["password"],
-            "registered_at": datetime.now().isoformat(),
-            "status": True
-        }
-        result = elsmanager.insert_document(index=userschema, doc_id=user_id, body=user_doc)
-        print(result)
-        return {
-            "id": user_id
-        }
+        usermodel = InputSchema()
+        raw_data = request.get_json()
+        resultvalidate = schema_validator_cerberus(raw_data,usermodel.register_user())
+        if resultvalidate.get("errors"):
+            return {
+                "error": resultvalidate.get("errors")
+            }
+        else:
+            user = elsmanager.get_data_by_filter(index=userschema, filter="phone_number",val=raw_data["phone_number"])
+            if uuidvalidation(user,"_id"):
+                return {
+                    "error": errors["phone_registered"]
+                }
+            user_doc = {
+                "name": raw_data["name"],
+                "phone_number": raw_data["phone_number"],
+                "age": raw_data["age"],
+                "password":raw_data["password"],
+                "registered_at": datetime.now().isoformat(),
+                "status": True
+            }
+            result = elsmanager.insert_document(index=userschema, doc_id=user_id, body=user_doc)
+            return {
+                "uuid": result.get("_id")
+            }
     
 class GetUser(Resource):
     def get(self):
-        raw_data = request.get_json()
-        user = elsmanager.get_data_by_filter(index=userschema, filter="_id",val=raw_data["uuid"])
+        uuid = request.args.get('uuid')
+        user = elsmanager.get_data_by_filter(index=userschema, filter="_id",val=uuid)
         return {
             "user": user["hits"]["hits"][0]
         }
-    
 # TODO: handle input body validation
 class GetUsers(Resource):
     def post(self):
@@ -55,7 +63,8 @@ class GetUsers(Resource):
 class UpdateUser(Resource):
     def put(self):
         inputbody = request.get_json()
-        userdb = elsmanager.get_data_by_filter(index=userschema,filter="_id",val=inputbody["uuid"])
+        uuid = request.args.get('uuid')
+        userdb = elsmanager.get_data_by_filter(index=userschema,filter="_id",val=uuid)
         # check exist user
         if uuidvalidation(userdb,"_id"):
             # check duplicate phone number
@@ -83,8 +92,8 @@ class UpdateUser(Resource):
     
 class DeleteUser(Resource):
     def delete(self):
-        inputbody = request.get_json()
-        result = elsmanager.delete_document(index=userschema, id=inputbody["uuid"])
+        uuid = request.args.get('uuid')
+        result = elsmanager.delete_document(index=userschema, id=uuid)
         return {
             "status": result
         }

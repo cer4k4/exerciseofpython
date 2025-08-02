@@ -13,7 +13,16 @@ class InputSchema:
             "password": {'type':'string','required': True},
         }
         return userregistermodel
-    
+
+    @staticmethod
+    def update_user():
+        updateuser = {
+            "name": {'type':'string','required': True,'max': 120},
+            "phone_number": {'type':'string','required': True,'regex': r'^09\d{9}$'},
+            "age": {'type':'integer'},
+        }
+        return updateuser
+
     @staticmethod
     def get_user_or_delete_user():
         uuid = {"uuid":{'type':'string','required': True,'regex': r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$'}}
@@ -22,10 +31,25 @@ class InputSchema:
     @staticmethod
     def get_users_with_filter():
         pagination = {
+            "size":{'type':'integer','required': True,'default':50},
+            "page":{'type':'integer','required': True,'default':0},
             "value":{'required': True},
             "field":{'type':'string','required': True,'allowed': ['phone_number', 'name', 'age','']},
-            "size":{'type':'integer','default':50,'required': True},
-            "page":{'type':'integer','default':1,'required': True}            
         }
         return pagination    
     
+    @staticmethod
+    def login():
+        userloginmodel = {
+            "phone_number": {'type':'string','required': True,'regex': r'^09\d{9}$'},
+            "password": {'type':'string','required': True},
+        }
+        return userloginmodel
+
+    @staticmethod
+    def history_logs():
+        userhistoryloginmodel = {
+            "min_date": {'required': True},
+            "max_date": {'required': True},
+        }
+        return userhistoryloginmodel

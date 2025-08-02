@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Users</title>
+</head>
+<body>
+    <h1>Get Users</h1>
+    
+    <form id="getUsersForm">
+        <label>Field (optional):</label>
+        <select id="field">
+            <option value="">All</option>
+            <option value="phone_number">Phone Number</option>
+            <option value="name">Name</option>
+            <option value="age">Age</option>
+        </select>
+        <br><br>
+        
+        <label>Value (if field selected):</label>
+        <input type="text" id="value">
+        <br><br>
+        
+        <label>Page:</label>
+        <input type="number" id="page" value="0" min="0">
+        <br><br>
+        
+        <label>Size:</label>
+        <input type="number" id="size" value="10" min="1">
+        <br><br>
+        
+        <button type="submit">Get Users</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('getUsersForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const data = {
+                field: document.getElementById('field').value,
+                value: document.getElementById('value').value,
+                page: parseInt(document.getElementById('page').value),
+                size: parseInt(document.getElementById('size').value)
+            };
+            
+            fetch('http://localhost:5000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -67,33 +67,62 @@ class GetUsers(Resource):
             return {
                 "error": resultvalidate.get("errors")
             }
+        if not filterbody.get("page"):
+            filterbody["page"] = 0
+        if not filterbody.get("size"):
+            filterbody["size"] = 10
+        if resultvalidate.get("errors"):
+            return {
+                "error": resultvalidate.get("errors")
+            }
         else:
-            if filterbody.get("filter",True):
-                users = elsmanager.get_documents(index=userschema,feild=filterbody["field"],val=filterbody["value"],page=filterbody["page"],size=filterbody["size"])
+            frontlist = []
+            if filterbody.get("field") != "":
+                if filterbody.get("field") == "age":
+                    filterbody.update({"value":int(filterbody.get("value"))})
+                userlist = elsmanager.get_documents(index=userschema,feild=filterbody["field"],val=filterbody["value"],page=filterbody["page"],size=filterbody["size"])
+                try:                    
+                    for u in userlist:
+                        frontlist.append(u.get("_source"))
+                except TypeError:
+                        print(f"WARNING - userlist is not iterable: {type(userlist)}")
                 return {
-                    "users": users
+                    "users": frontlist
                 }
-            elif filterbody.get("filter",False):
-                users = elsmanager.get_documents(index=userschema,feild=None,val=None,page=filterbody["page"],size=filterbody["size"])
-                return {
-                    "users": users
-                }
-            else:
-                return {
-                    "users": "unknow"
-                }
+            userlist = elsmanager.get_documents(index=userschema,feild=None,val=None,page=filterbody["page"],size=filterbody["size"])
+            try:                    
+                for u in userlist:        
+                    user = u.get("_source")
+                    user.update({"uuid":u.get("_id")})
+                    frontlist.append(user)
+            except TypeError:
+                    print(f"WARNING - userlist is not iterable: {type(userlist)}")
+            return {
+                "users": frontlist
+            }
 
 
 class UpdateUser(Resource):
     def put(self):
         inputbody = request.get_json()
         uuid = request.args.get('uuid')
+        usermodel = InputSchema()
+        resultvalidateuuid = schema_validator_cerberus({"uuid":uuid},usermodel.get_user_or_delete_user())
+        if resultvalidateuuid.get("errors"):
+            return {
+                "error": resultvalidate.get("errors")
+            }
+        resultvalidate = schema_validator_cerberus(inputbody,usermodel.update_user())
+        if resultvalidate.get("errors"):
+            return {
+                "error": resultvalidate.get("errors")
+            }
         userdb = elsmanager.get_data_by_filter(index=userschema,filter="_id",val=uuid)
         # check exist user
         if uuidvalidation(userdb,"_id"):
             # check duplicate phone number
             if not validationuserfields(userdb,"_source","phone_number",inputbody["phone_number"]):
-                anotheruserdb = elsmanager.get_data_by_filter(index=userschema,filter="phone_number",val=inputbody["phone_number"])
+                anotheruserdb = elsmanager.get_data_by_filter(index=userschema,filter="phone_number")
                 if uuidvalidation(anotheruserdb,"_id"):
                     if giveuuid(anotheruserdb) != giveuuid(userdb):
                         return {
@@ -103,10 +132,10 @@ class UpdateUser(Resource):
                 "name": inputbody["name"],
                 "phone_number": inputbody["phone_number"],
                 "age": inputbody["age"],
-                "password":inputbody["password"],
+                "password": givepassword(userdb),
                 "updated_at": datetime.now().isoformat(),
             }
-            result = elsmanager.update_document(index=userschema, id=inputbody["uuid"], doc=user_doc)        
+            result = elsmanager.update_document(index=userschema, id=uuid, doc=user_doc)        
             return {
                 "status": result["result"]
             }
@@ -146,4 +175,11 @@ def giveuuid(user):
     for g in user["hits"]["hits"]:
         if g["_id"]:
             return g["_id"]
+    return ""
+
+def givepassword(user):
+    for g in user["hits"]["hits"]:
+        if g["_source"]:
+            if g["_source"]["password"]:
+                return g["_source"]["password"]
     return ""

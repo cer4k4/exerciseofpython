@@ -47,7 +47,7 @@ class UserLogin(Resource):
                 if validatepassword(raw_data["password"],g["_source"]["password"]):
                     user_doc = {
                         "uuid": g["_id"],
-                        "login_at": datetime.now().isoformat()
+                        "login_at": datetime.now().timestamp()
                     }
                     elsmanager.insert_document(index=logschema, doc_id=user_id, body=user_doc)
                     return {"status":"successful"}

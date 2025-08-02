@@ -28,6 +28,7 @@
     
     <div id="result"></div>
 
+    <div id="result1"></div>
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -47,12 +48,8 @@
                 body: JSON.stringify(data)
             })
             .then(response => response.json())
-            .then(result => {
-                document.getElementById('result').innerHTML = JSON.stringify(result, null, 2);
-            })
-            .catch(error => {
-                document.getElementById('result').innerHTML = 'Error: ' + error;
-            });
+            .then(result => {document.getElementById('result').innerHTML = JSON.stringify(result, null, 2);})
+            .catch(error => {document.getElementById('result').innerHTML = 'Error: ' + error;});
         });
     </script>
 </body>

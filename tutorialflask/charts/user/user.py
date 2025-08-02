@@ -1,5 +1,5 @@
 #import copy
-from flask import request, jsonify
+from flask import request
 from flask_restful import Resource
 from tools.elastic import ConnectionElasticsearch
 from tools.cerberus_validator import schema_validator_cerberus
@@ -35,7 +35,7 @@ class RegisterUser(Resource):
                 "phone_number": raw_data["phone_number"],
                 "age": raw_data["age"],
                 "password":raw_data["password"],
-                "registered_at": datetime.now().isoformat(),
+                "registered_at": datetime.now().timestamp(),
                 "status": True
             }
             result = elsmanager.insert_document(index=userschema, doc_id=user_id, body=user_doc)
@@ -133,7 +133,7 @@ class UpdateUser(Resource):
                 "phone_number": inputbody["phone_number"],
                 "age": inputbody["age"],
                 "password": givepassword(userdb),
-                "updated_at": datetime.now().isoformat(),
+                "updated_at": datetime.now().timestamp(),
             }
             result = elsmanager.update_document(index=userschema, id=uuid, doc=user_doc)        
             return {

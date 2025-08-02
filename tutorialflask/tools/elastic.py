@@ -76,8 +76,52 @@ class ConnectionElasticsearch(object):
             print(f"Elasticsearch index error: {e}")
             return None
         
+    # def count_of_index(self,index,feild,mindate,maxdate):
+    #         query = {
+    #             "range": {
+    #                 feild: {
+    #                     "gte":mindate,
+    #                     "lte":maxdate
+    #                 }
+    #             }
+    #         }
+    #         result = self.es.count(index=index,query=query)
+    #         return result
+        
+    # def count_of_index(self, index, field, mindate, maxdate):
+    #     query = {
+    #         "query": {
+    #             "range": {
+    #                 field: {
+    #                     "gte": mindate,
+    #                     "lte": maxdate
+    #                 }
+    #             }
+    #         },
+    #         "aggs": {
+    #             "logins_per_day": {
+    #                 "date_histogram": {
+    #                     "field": field,
+    #                     "interval": "day",  # می‌تونی این رو به "hour" یا "week" تغییر بدی
+    #                     "format": "yyyy-MM-dd"  # فرمت تاریخ
+    #                 }
+    #             }
+    #         }
+    #     }
+        
+    #     result = self.es.search(index=index, body=query)
+        
+    #     # استخراج تعداد لاگین‌ها از نتایج آگریگیشن
+    #     logins_per_day = result['aggregations']['logins_per_day']['buckets']
+        
+    #     return logins_per_day
+
+    
     def count_of_index(self, index, field, mindate, maxdate):
-        print(mindate,maxdate)
+        # تبدیل به yyyy-MM-dd برای extended_bounds
+        #min_day = datetime.fromisoformat(mindate).strftime('%Y-%m-%d')
+        #max_day = datetime.fromisoformat(maxdate).strftime('%Y-%m-%d')
+
         query = {
             "query": {
                 "range": {
@@ -92,6 +136,7 @@ class ConnectionElasticsearch(object):
                     "date_histogram": {
                         "field": field,
                         "interval": "day",
+                        "min_doc_count": 0,
                         "extended_bounds": {
                             "min": mindate,
                             "max": maxdate
@@ -101,7 +146,6 @@ class ConnectionElasticsearch(object):
             }
         }
         result = self.es.search(index=index, body=query)
-        print(result)
         return result['aggregations']['logins_per_day']['buckets']
 
 

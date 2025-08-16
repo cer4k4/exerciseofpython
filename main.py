@@ -451,52 +451,82 @@ def search_filed_in_index(indexlist,filed,newfiledflag,foundinindex):
 # get_new_fields(req.get("index_names"), "Fname")
 # print(indexwithfileds)
 
+#####################################
+# oldfeild = "Fname"
+# resultFname = databaseConnection.get_documents2(index="a",feild=oldfeild,val="i")
+# hitsFname = resultFname.get("hits", {}).get("hits", [])
+# for k in hitsFname:
+#     newfild = k["_source"].keys()
+#     for n in newfild:
+#         if n != oldfeild:
+#             resultLastName = databaseConnection.get_documents3(index="b",feild=n,val=k["_source"].get(n))
+#             hitsLname = resultLastName.get("hits", {}).get("hits", [])
+#             if len(hitsLname) == 0:
+#                 resultCLastName = databaseConnection.get_documents3(index="c",feild=n,val=k["_source"].get(n))
+#                 hitsCLname = resultCLastName.get("hits", {}).get("hits", [])
+#                 if len(hitsCLname) != 0:
+#                     for h in hitsCLname:
+#                         oldfeild = n
+#                         sskeys = h["_source"].keys()
+#                         for ss in sskeys:
+#                             if oldfeild != ss:
+#                                 resultCityCode5 = databaseConnection.get_documents3(index="d",feild=ss,val=h["_source"].get(ss))
+#                                 hitsCityCode5 = resultCityCode5.get("hits", {}).get("hits", [])
+#                                 for dd in hitsCityCode5:
+#                                     print(k["_index"],k["_source"],h["_index"],h["_source"],dd["_index"],dd["_source"])
+#             #else:
+#                 #print(hitsLname)
+#             oldfeild = n # oldfeild = Lname
+#             for kl in hitsLname:
+#                 newklfild = kl["_source"].keys() # Lname & city
+#                 for nl in newklfild:
+#                     if nl != oldfeild:
+#                         resultCity = databaseConnection.get_documents3(index="c",feild=nl,val=kl["_source"].get(nl))
+#                         hitsCity = resultCity.get("hits", {}).get("hits", [])
+#                         for kc in hitsCity:
+#                             newkcfild = kc["_source"].keys()
+#                             for ck in newkcfild:
+#                                 if ck != oldfeild:
+#                                     resultCityCode = databaseConnection.get_documents3(index="d",feild=ck,val=kc["_source"].get(ck))
+#                                     hitsCityCode = resultCityCode.get("hits", {}).get("hits", [])
+#                                     for ssdd in hitsCityCode:
+#                                         print(k["_index"],k["_source"],kl["_index"],kl["_source"],kc["_index"],kc["_source"],ssdd["_index"],ssdd["_source"])
+#                                     oldfeild = ck
+#                 resultCityCode2 = databaseConnection.get_documents3(index="d",feild="city",val=kl["_source"].get("city"))
+#                 hitsCityCode2 = resultCityCode2.get("hits", {}).get("hits", [])
+#                 for ds in hitsCityCode2:
+#                     print(k["_index"],k["_source"],kl["_index"],kl["_source"],ds["_index"],ds["_source"])
+#######################
 
-oldfeild = "Fname"
-resultFname = databaseConnection.get_documents2(index="a",feild=oldfeild,val="i")
-hitsFname = resultFname.get("hits", {}).get("hits", [])
-for k in hitsFname:
-    newfild = k["_source"].keys()
-    for n in newfild:
-        if n != oldfeild:
-            resultLastName = databaseConnection.get_documents3(index="b",feild=n,val=k["_source"].get(n))
-            hitsLname = resultLastName.get("hits", {}).get("hits", [])
-            if len(hitsLname) == 0:
-                resultCLastName = databaseConnection.get_documents3(index="c",feild=n,val=k["_source"].get(n))
-                hitsCLname = resultLastName.get("hits", {}).get("hits", [])
-                print(hitsCLname)    
-            else:
-                print(hitsLname)
-            oldfeild = n # oldfeild = Lname
-            for kl in hitsLname:
-                newklfild = kl["_source"].keys() # Lname & city
-                for nl in newklfild:
-                    if nl != oldfeild:
-                        resultCity = databaseConnection.get_documents3(index="c",feild=nl,val=kl["_source"].get(nl))
-                        hitsCity = resultCity.get("hits", {}).get("hits", [])
-                        for kc in hitsCity:
-                            newkcfild = kc["_source"].keys()
-                            for ck in newkcfild:
-                                if ck != oldfeild:
-                                    resultCityCode = databaseConnection.get_documents3(index="d",feild=ck,val=kc["_source"].get(ck))
-                                    hitsCityCode = resultCityCode.get("hits", {}).get("hits", [])
-                                    print(kc["_index"],kc["_source"],hitsCityCode)
-                                    oldfeild = ck
-                resultCityCode2 = databaseConnection.get_documents3(index="d",feild="city",val=kl["_source"].get("city"))
-                hitsCityCode2 = resultCityCode2.get("hits", {}).get("hits", [])
-                print(k["_index"],k["_source"],kl["_index"],kl["_source"],kc["_index"],kc["_source"],hitsCityCode2)
+visited_filed = set()
 
-
-
-    # def get_documents2(self, index, feild=None, val=None):
-    #     if feild is None:
-    #         query = {"query": {"match_all": {}}}
-    #     else:
-    #         query = {"query": {"regexp": {feild: f"{".*"+val+".*"}"}}}
-    
-    #     result = self.es.search(index=index, body=query)
-    #     return result
-
-
-
-
+def test(inputfeild,val,visited):
+    nodes = dict()
+    lists = []
+    if inputfeild+val in visited:
+        return
+    visited_filed.add(inputfeild+val)
+    for index in req["index_names"]:
+        if val == "i":
+            resultFname = databaseConnection.get_documents2(index=index,feild=inputfeild,val=val)
+            hitsFname = resultFname.get("hits", {}).get("hits", [])
+            for h in hitsFname:
+                lists.append(h.get("_source"))
+            nodes.update({index+"_"+inputfeild+"_"+val:lists})
+        else:
+            lists2 = []
+            nodes2 = dict()
+            resultFname = databaseConnection.get_documents3(index=index,feild=inputfeild,val=val)
+            hitsFname = resultFname.get("hits", {}).get("hits", [])
+            for h in hitsFname:
+                lists2.append(h.get("_source"))
+            nodes2.update({index+"_"+inputfeild+"_"+val:lists2})
+            print(nodes2)
+        for l in hitsFname:
+            for fild in l["_source"].keys():
+                if fild != inputfeild:
+                    print(index,"key:",inputfeild,"value:",val, "---------->","new_field data",fild,":",l["_source"].get(fild))
+                    test(inputfeild=fild,val=l["_source"].get(fild),visited=visited_filed.copy())
+            
+    print(nodes)
+test(inputfeild="Fname",val="i",visited=visited_filed.copy())

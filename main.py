@@ -132,9 +132,12 @@ class ConnectionElasticsearch:
             query = {"query": {"regexp": {feild: f"{".*"+val+".*"}"}}}
     
         result = self.es.search(index=index, body=query)
-        print(result)
         return result
-
+    
+    def get_documents3(self, index, feild=None, val=None):
+        query = {"query": {"match": {feild: val}}}
+        result = self.es.search(index=index, body=query)
+        return result
 
 
 
@@ -233,7 +236,167 @@ def search_filed_in_index(indexlist,filed,newfiledflag,foundinindex):
 # getNewFilds(req.get("index_names"),"Fname")
 
 
+# def getNewFields(indexes, field, depth=0, max_depth=3):
+#     if depth > max_depth:  
+#         return    
+#     for index in indexes:
+#         new_indexes, fields = databaseConnection.get_fileds_of_index(field_name=field, index=index)
+#         if not new_indexes:
+#             continue
 
+#         print(new_indexes, fields)
+
+#         for f in fields:
+#             for n in indexes:
+#                 if n not in new_indexes:
+#                     getNewFields([n], f, depth + 1, max_depth)
+
+
+# getNewFields(req.get("index_names"), "city")
+
+
+# def getNewFields(indexes, field, relations, depth=0, max_depth=5):
+#     if depth > max_depth:
+#         return
+    
+#     for index in indexes:
+#         new_indexes, fields = databaseConnection.get_fileds_of_index(field_name=field, index=index)
+#         if not new_indexes:
+#             continue
+
+
+#         if index not in relations:
+#             relations[index] = set()
+#         relations[index].update(fields)
+
+#         print(new_indexes, fields)
+
+
+#         for f in fields:
+#             for n in indexes:
+#                 if n not in new_indexes:
+#                     getNewFields([n], f, relations, depth + 1, max_depth)
+
+# visited_fields = set()
+# relations = {}
+# for f in ["Lname","city"]:
+#     getNewFields(req.get("index_names"), f, relations)
+#     print("Fname:", relations)
+
+#######################################################################################
+# def getNewFields(indexes, field, relations, depth=0, max_depth=5):
+#     if depth > max_depth:
+#         return
+    
+#     for index in indexes:
+#         new_indexes, fields = databaseConnection.get_fileds_of_index(field_name=field, index=index)
+
+
+#         if not new_indexes:
+#             if index not in relations:
+#                 relations[index] = {}
+#             continue
+#         if index not in relations:
+#             relations[index] = {}
+#         for f in fields:
+#             relations[index][f] = "found"
+#         #print(new_indexes, fields)
+#         for f in fields:
+#             for n in indexes:
+#                 if n not in new_indexes:
+#                     getNewFields([n], f, relations, depth + 1, max_depth)
+
+# visited_fields = set({"Fname"})
+# relations = {}
+
+
+# def itrate(copyofvisited):
+#     for f in copyofvisited:
+#         getNewFields(req.get("index_names"), f, relations)
+#         for index in req.get("index_names"):
+#             newfileds = relations.get(index)
+#             for n in newfileds:
+#                 visited_fields.add(n)
+#     return
+
+# start = len(visited_fields)
+# itrate(visited_fields.copy())
+# end = len(visited_fields)
+# if start != end:
+#     itrate(visited_fields.copy())
+
+# for l in visited_fields:
+#     getNewFields(req.get("index_names"), l, relations)
+
+# database = relations
+
+# for d in database:
+#     for s in database.get(d).keys():
+#         print(d,s)
+########################################################################################################
+# def chain_search_steps(steps, value, visited=None, current_result=None, final_results=None):
+#     if visited is None:
+#         visited = set()
+#     if current_result is None:
+#         current_result = {}
+#     if final_results is None:
+#         final_results = []
+
+#     if not steps:
+#         final_results.append(current_result)
+#         return final_results
+
+#     index_name, field_name = steps[0]
+#     result = databaseConnection.get_documents2(index=index_name, feild=field_name, val=value)
+#     hits = result.get("hits", {}).get("hits", [])
+
+#     for doc in hits:
+#         doc_id = (index_name, doc["_id"])
+#         if doc_id in visited:
+#             continue
+#         visited.add(doc_id)
+
+#         # اطلاعات فعلی را اضافه کن
+#         new_result = current_result.copy()
+#         new_result.update(doc["_source"])
+
+#         # تعیین مقدار مرحله بعدی
+#         if len(steps) > 1:
+#             next_index, next_field = steps[1]
+
+#             # برای مرحله بعد، مقدار مناسب را از doc["_source"] می‌گیریم
+#             if next_field in doc["_source"]:
+#                 next_value = doc["_source"][next_field]
+#             elif "city" in doc["_source"]:
+#                 next_value = doc["_source"]["city"]
+#             elif "Lname" in doc["_source"]:
+#                 next_value = doc["_source"]["Lname"]
+#             else:
+#                 next_value = None
+
+#             if next_value is not None:
+#                 chain_search_steps(steps[1:], next_value, visited, new_result, final_results)
+#         else:
+#             # آخرین مرحله
+#             final_results.append(new_result)
+
+#     return final_results
+
+
+# search_steps = [
+#     ("a", "Fname"),
+#     ("b", "Lname"),
+#     ("c", "Lname"),  # یا city بسته به نیاز
+#     ("d", "city")    # برای گرفتن city_code
+# ]
+
+# results = chain_search_steps(search_steps, "i")
+
+# for r in results:
+#     print(r)
+
+
+#print("Visited:", visited_fields)
 
 # def get_new_fields(indexes, start_field):
 #     visited_fields = set()   # جلوگیری از بررسی دوباره یک فیلد
@@ -267,23 +430,73 @@ def search_filed_in_index(indexlist,filed,newfiledflag,foundinindex):
 
 
 
-visited_fields = set()
-indexwithfileds = dict()
-def get_new_fields(indexes, field):
-    if field in visited_fields:
-        return
-    visited_fields.add(field)
-    for idx in indexes:
-        indices_with_field, new_fields_found = databaseConnection.get_fileds_of_index(index=idx, field_name=field)
-        if indices_with_field:
-     #       print(indices_with_field, new_fields_found)
-            if type(indexwithfileds.get(idx)) != None:
-                old = list(indexwithfileds.get(idx))
-                old.append(new_fields_found)
-                indexwithfileds.update({idx:old})
-                for nf in new_fields_found:
-                    get_new_fields(indexes, nf)
+# visited_fields = set()
+# indexwithfileds = dict()
+# def get_new_fields(indexes, field):
+#     if field in visited_fields:
+#         return
+#     visited_fields.add(field)
+#     for idx in indexes:
+#         indices_with_field, new_fields_found = databaseConnection.get_fileds_of_index(index=idx, field_name=field)
+#         if indices_with_field:
+#      #       print(indices_with_field, new_fields_found)
+#             if type(indexwithfileds.get(idx)) != None:
+#                 old = list(indexwithfileds.get(idx))
+#                 old.append(new_fields_found)
+#                 indexwithfileds.update({idx:old})
+#                 for nf in new_fields_found:
+#                     get_new_fields(indexes, nf)
 
 
-get_new_fields(req.get("index_names"), "Fname")
-print(indexwithfileds)
+# get_new_fields(req.get("index_names"), "Fname")
+# print(indexwithfileds)
+
+
+oldfeild = "Fname"
+resultFname = databaseConnection.get_documents2(index="a",feild=oldfeild,val="i")
+hitsFname = resultFname.get("hits", {}).get("hits", [])
+for k in hitsFname:
+    newfild = k["_source"].keys()
+    for n in newfild:
+        if n != oldfeild:
+            resultLastName = databaseConnection.get_documents3(index="b",feild=n,val=k["_source"].get(n))
+            hitsLname = resultLastName.get("hits", {}).get("hits", [])
+            if len(hitsLname) == 0:
+                resultCLastName = databaseConnection.get_documents3(index="c",feild=n,val=k["_source"].get(n))
+                hitsCLname = resultLastName.get("hits", {}).get("hits", [])
+                print(hitsCLname)    
+            else:
+                print(hitsLname)
+            oldfeild = n # oldfeild = Lname
+            for kl in hitsLname:
+                newklfild = kl["_source"].keys() # Lname & city
+                for nl in newklfild:
+                    if nl != oldfeild:
+                        resultCity = databaseConnection.get_documents3(index="c",feild=nl,val=kl["_source"].get(nl))
+                        hitsCity = resultCity.get("hits", {}).get("hits", [])
+                        for kc in hitsCity:
+                            newkcfild = kc["_source"].keys()
+                            for ck in newkcfild:
+                                if ck != oldfeild:
+                                    resultCityCode = databaseConnection.get_documents3(index="d",feild=ck,val=kc["_source"].get(ck))
+                                    hitsCityCode = resultCityCode.get("hits", {}).get("hits", [])
+                                    print(kc["_index"],kc["_source"],hitsCityCode)
+                                    oldfeild = ck
+                resultCityCode2 = databaseConnection.get_documents3(index="d",feild="city",val=kl["_source"].get("city"))
+                hitsCityCode2 = resultCityCode2.get("hits", {}).get("hits", [])
+                print(k["_index"],k["_source"],kl["_index"],kl["_source"],kc["_index"],kc["_source"],hitsCityCode2)
+
+
+
+    # def get_documents2(self, index, feild=None, val=None):
+    #     if feild is None:
+    #         query = {"query": {"match_all": {}}}
+    #     else:
+    #         query = {"query": {"regexp": {feild: f"{".*"+val+".*"}"}}}
+    
+    #     result = self.es.search(index=index, body=query)
+    #     return result
+
+
+
+

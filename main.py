@@ -125,7 +125,7 @@ class ConnectionElasticsearch:
             print(f"Elasticsearch index error: {e}")
             return e.__dict__["body"]["result"]
             
-    def get_documents2(self, index, feild=None, val=None):
+    def get_documents_by_regex(self, index, feild=None, val=None):
         if feild is None:
             query = {"query": {"match_all": {}}}
         else:
@@ -138,14 +138,6 @@ class ConnectionElasticsearch:
         query = {"query": {"match": {feild: val}}}
         result = self.es.search(index=index, body=query)
         return result
-
-
-
-
-
-
-
-
 
     def get_fileds_of_index(self,index,field_name):
         mappings = self.es.indices.get_mapping(index=index)
@@ -498,19 +490,34 @@ def search_filed_in_index(indexlist,filed,newfiledflag,foundinindex):
 #                     print(k["_index"],k["_source"],kl["_index"],kl["_source"],ds["_index"],ds["_source"])
 #######################
 
+def chekcduplicateData(nodes,data):
+    for n in nodes:
+        print(n,nodes[n])
+        if nodes[n] == data:
+            return True
+    return False
+
+class Edge:
+    def __init__(self,id,source,targer):
+        self.ID = id
+        self.source = source
+        self.target = targer
+        self.feild = self.feild
+
+
 visited_filed = set()
 nodes = dict()
-def test(inputfeild,val,visited): # Fname i {}
-    if inputfeild+"_"+val in visited: # False
+def test(inputfeild,val,visited):
+    if inputfeild+"_"+val in visited:
         return
-    visited_filed.add(inputfeild+"_"+val) # {Fname+i}
-    for index in req["index_names"]: # a [a,b,c,d]
+    visited_filed.add(inputfeild+"_"+val)
+    for index in req["index_names"]:
         if index+"_"+inputfeild+"_"+val in visited:
             continue
         list = []
-        if val == "i":               # True 
-            resultFname = databaseConnection.get_documents2(index=index,feild=inputfeild,val=val) # a Fname i
-            hitsFname = resultFname.get("hits", {}).get("hits", [])                                           
+        if val == "i":
+            resultFname = databaseConnection.get_documents_by_regex(index=index,feild=inputfeild,val=val)
+            hitsFname = resultFname.get("hits", {}).get("hits", [])
             for h in hitsFname:
                 list.append(h["_source"])
                 for key in h["_source"]:
@@ -523,18 +530,16 @@ def test(inputfeild,val,visited): # Fname i {}
             for h in hitsFname:
                 list.append(h.get("_source"))
                 for key in h["_source"]:
+                    chekcduplicateData(nodes,h["_source"])
                     visited_filed.add(index+"_"+key+"_"+h["_source"].get(key))
             if len(list) != 0:
                 nodes.update({index+"_"+inputfeild+"_"+val:list})
-            #visited_filed.add()
         for l in hitsFname:
             for fild in l["_source"].keys():
                 if fild != inputfeild:
                     #print(fild,l["_source"])
                     #print(index,"key:",inputfeild,"value:",val, "---------->","new_field data",fild,":",l["_source"].get(fild))
                     test(inputfeild=fild,val=l["_source"].get(fild),visited=visited_filed.copy())
-    #print(len(nodes2))
 
 
 test(inputfeild="Fname",val="i",visited=visited_filed.copy())
-for n in nodes:print(n,nodes[n])

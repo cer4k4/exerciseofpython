@@ -499,34 +499,42 @@ def search_filed_in_index(indexlist,filed,newfiledflag,foundinindex):
 #######################
 
 visited_filed = set()
-
-def test(inputfeild,val,visited):
-    nodes = dict()
-    lists = []
-    if inputfeild+val in visited:
+nodes = dict()
+def test(inputfeild,val,visited): # Fname i {}
+    if inputfeild+"_"+val in visited: # False
         return
-    visited_filed.add(inputfeild+val)
-    for index in req["index_names"]:
-        if val == "i":
-            resultFname = databaseConnection.get_documents2(index=index,feild=inputfeild,val=val)
-            hitsFname = resultFname.get("hits", {}).get("hits", [])
+    visited_filed.add(inputfeild+"_"+val) # {Fname+i}
+    for index in req["index_names"]: # a [a,b,c,d]
+        if index+"_"+inputfeild+"_"+val in visited:
+            continue
+        list = []
+        if val == "i":               # True 
+            resultFname = databaseConnection.get_documents2(index=index,feild=inputfeild,val=val) # a Fname i
+            hitsFname = resultFname.get("hits", {}).get("hits", [])                                           
             for h in hitsFname:
-                lists.append(h.get("_source"))
-            nodes.update({index+"_"+inputfeild+"_"+val:lists})
+                list.append(h["_source"])
+                for key in h["_source"]:
+                    visited_filed.add(index+"_"+key+"_"+h["_source"].get(key))
+            if len(list) != 0:
+                nodes.update({index+"_"+inputfeild+"_"+val:list})
         else:
-            lists2 = []
-            nodes2 = dict()
             resultFname = databaseConnection.get_documents3(index=index,feild=inputfeild,val=val)
             hitsFname = resultFname.get("hits", {}).get("hits", [])
             for h in hitsFname:
-                lists2.append(h.get("_source"))
-            nodes2.update({index+"_"+inputfeild+"_"+val:lists2})
-            print(nodes2)
+                list.append(h.get("_source"))
+                for key in h["_source"]:
+                    visited_filed.add(index+"_"+key+"_"+h["_source"].get(key))
+            if len(list) != 0:
+                nodes.update({index+"_"+inputfeild+"_"+val:list})
+            #visited_filed.add()
         for l in hitsFname:
             for fild in l["_source"].keys():
                 if fild != inputfeild:
-                    print(index,"key:",inputfeild,"value:",val, "---------->","new_field data",fild,":",l["_source"].get(fild))
+                    #print(fild,l["_source"])
+                    #print(index,"key:",inputfeild,"value:",val, "---------->","new_field data",fild,":",l["_source"].get(fild))
                     test(inputfeild=fild,val=l["_source"].get(fild),visited=visited_filed.copy())
-            
-    print(nodes)
+    #print(len(nodes2))
+
+
 test(inputfeild="Fname",val="i",visited=visited_filed.copy())
+for n in nodes:print(n,nodes[n])

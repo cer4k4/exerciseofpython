@@ -2,11 +2,6 @@ from elasticsearch import Elasticsearch
 from collections import deque
 import uuid
 
-req = {
-    "index_names":["a","b","c","d"],
-    "Lname": "i",
-}
-
 
 class ConnectionElasticsearch:
     def __init__(self):
@@ -130,8 +125,7 @@ class ConnectionElasticsearch:
         if feild is None:
             query = {"query": {"match_all": {}}}
         else:
-            query = {"query": {"regexp": {feild: f"{".*"+val+".*"}"}}}
-    
+            query = {"query": {"regexp": {str(feild)+".keyword": {"value":f"{".*"+val+".*"}"}}}}
         result = self.es.search(index=index, body=query)
         return result
     
@@ -172,9 +166,9 @@ class ConnectionElasticsearch:
     
 databaseConnection = ConnectionElasticsearch()
 #databaseConnection.get_documents2(index="a",feild="Fname",val="i")
-findfeilds = dict()
-newfindfeilds = dict()
-s = list(req.keys())
+# findfeilds = dict()
+# newfindfeilds = dict()
+# s = list(req.keys())
 
 
 def search_filed_in_index(indexlist,filed,newfiledflag,foundinindex):
@@ -568,23 +562,23 @@ class Edge:
         return f"Edge(id={self.id}, source={self.source}, target={self.target}, field={self.field}, value={self.value})"
 
 
-def test(inputfeild, val, visited, parent=None):
-    current_key = inputfeild + "_" + val
+def test(inputfeild, val, visited, parent=None, req={}):
+    current_key = inputfeild + "_" + str(val)
     if current_key in visited:
         return
     visited_filed.add(current_key)
 
-    for index in req["index_names"]:
+    for index in req.get("index_names",[]):
         node_key = index + "_" + current_key
         if node_key in visited:
             continue
 
         docs = []
-        if val == "i":
+        if isinstance(val,str):
             resultFname = databaseConnection.get_documents_by_regex(index=index, feild=inputfeild, val=val)
         else:
             resultFname = databaseConnection.get_documents3(index=index, feild=inputfeild, val=val)
-
+            
         hitsFname = resultFname.get("hits", {}).get("hits", [])
         for h in hitsFname:
             docs.append(h["_source"])
@@ -613,9 +607,65 @@ def test(inputfeild, val, visited, parent=None):
                         parent=node_key
                     )
 
+def test(inputfeild, val, visited, parent=None, req={}):
+    current_key = inputfeild + "_" + str(val)
+    if current_key in visited:
+        return
+    visited_filed.add(current_key)
+    
+    for index in req.get("index_names", []):
+        node_key = index + "_" + current_key
+        if node_key in visited:
+            continue
+
+        docs = []
+        if isinstance(val, str):
+            resultFname = databaseConnection.get_documents_by_regex(index=index, feild=inputfeild, val=val)
+        else:
+            resultFname = databaseConnection.get_documents3(index=index, feild=inputfeild, val=val)
+        
+        hitsFname = resultFname.get("hits", {}).get("hits", [])
+        for h in hitsFname:
+            docs.append(h["_source"])
+            for key, v in h["_source"].items():
+                visited_filed.add(index + "_" + key + "_" + str(v))
+
+        if len(docs) != 0:
+            nodes[node_key] = docs
+            if parent:  
+                edge = Edge(
+                    id=str(uuid.uuid4()),
+                    source=parent,
+                    target=node_key,
+                    field=inputfeild,
+                    value=val
+                )
+                edges.append(edge)
+
+        # نکته اصلی: حالا همه‌ی فیلدهای جدیدی که پیدا شد رو دوباره روی کل ایندکس‌ها بگرد
+        for l in hitsFname:
+            for fild, fval in l["_source"].items():
+                if fild != inputfeild:  
+                    test(
+                        inputfeild=fild,
+                        val=fval,
+                        visited=visited_filed.copy(),
+                        parent=node_key,
+                        req=req
+                    )
 
 
-test(inputfeild="Fname", val="i", visited=visited_filed.copy())
+
+req = {
+    "index_names":["names","ncodes","city"],
+    "input":{
+        "entity_name": "city_name",
+        "entity_value": "Tehran",
+    },
+}
+
+
+test(inputfeild=req.get("input",{}).get("entity_name",""), val=req.get("input",{}).get("entity_value",""), visited=visited_filed.copy(),req = req)
 
 print("Nodes:")
 for i in nodes:

@@ -1,5 +1,6 @@
 from elasticsearch import Elasticsearch
 from collections import deque
+import uuid
 
 req = {
     "index_names":["a","b","c","d"],
@@ -492,54 +493,134 @@ def search_filed_in_index(indexlist,filed,newfiledflag,foundinindex):
 
 def chekcduplicateData(nodes,data):
     for n in nodes:
-        print(n,nodes[n])
         if nodes[n] == data:
             return True
     return False
 
-class Edge:
-    def __init__(self,id,source,targer):
-        self.ID = id
-        self.source = source
-        self.target = targer
-        self.feild = self.feild
+# class Edge:
+#     def __init__(self,id,source,targer,feild,value):
+#         self.ID = id
+#         self.source = source
+#         self.target = targer
+#         self.feild = feild
+#         self.value = value
+
+#     def getEdgeInfo(self):
+#         return self.ID,self.source,self.target,self.feild,self.value
+    
+#     def getByFeild(self,feild,val):
+#         if self.feild == feild and self.value == val:
+#             return self.ID,self.source,self.target,self.feild,self.value
+
+# visited_filed = set()
+# nodes = dict()
+# def test(inputfeild,val,visited):
+#     if inputfeild+"_"+val in visited:
+#         return
+#     visited_filed.add(inputfeild+"_"+val)
+#     for index in req["index_names"]:
+#         if index+"_"+inputfeild+"_"+val in visited:
+#             continue
+#         list = []
+#         if val == "i":
+#             resultFname = databaseConnection.get_documents_by_regex(index=index,feild=inputfeild,val=val)
+#             hitsFname = resultFname.get("hits", {}).get("hits", [])
+#             for h in hitsFname:
+#                 list.append(h["_source"])
+#                 for key in h["_source"]:
+#                     visited_filed.add(index+"_"+key+"_"+h["_source"].get(key))
+#             if len(list) != 0:
+
+#                 nodes.update({index+"_"+inputfeild+"_"+val:list})
+#         else:
+#             resultFname = databaseConnection.get_documents3(index=index,feild=inputfeild,val=val)
+#             hitsFname = resultFname.get("hits", {}).get("hits", [])
+#             for h in hitsFname:
+#                 list.append(h.get("_source"))
+#                 for key in h["_source"]:
+#                     chekcduplicateData(nodes,h["_source"])
+#                     visited_filed.add(index+"_"+key+"_"+h["_source"].get(key))
+#             if len(list) != 0:
+#                 nodes.update({index+"_"+inputfeild+"_"+val:list})
+#         for l in hitsFname:
+#             for fild in l["_source"].keys():
+#                 if fild != inputfeild:
+#                     #print(fild,l["_source"])
+#                     #print(index,"key:",inputfeild,"value:",val, "---------->","new_field data",fild,":",l["_source"].get(fild))
+#                     test(inputfeild=fild,val=l["_source"].get(fild),visited=visited_filed.copy())
+# test(inputfeild="Fname",val="i",visited=visited_filed.copy())
+# for i in nodes:print(i,nodes[i])
 
 
 visited_filed = set()
 nodes = dict()
-def test(inputfeild,val,visited):
-    if inputfeild+"_"+val in visited:
+edges = []
+
+class Edge:
+    def __init__(self, id, source, target, field, value):
+        self.id = id
+        self.source = source
+        self.target = target
+        self.field = field
+        self.value = value
+
+    def __repr__(self):
+        return f"Edge(id={self.id}, source={self.source}, target={self.target}, field={self.field}, value={self.value})"
+
+
+def test(inputfeild, val, visited, parent=None):
+    current_key = inputfeild + "_" + val
+    if current_key in visited:
         return
-    visited_filed.add(inputfeild+"_"+val)
+    visited_filed.add(current_key)
+
     for index in req["index_names"]:
-        if index+"_"+inputfeild+"_"+val in visited:
+        node_key = index + "_" + current_key
+        if node_key in visited:
             continue
-        list = []
+
+        docs = []
         if val == "i":
-            resultFname = databaseConnection.get_documents_by_regex(index=index,feild=inputfeild,val=val)
-            hitsFname = resultFname.get("hits", {}).get("hits", [])
-            for h in hitsFname:
-                list.append(h["_source"])
-                for key in h["_source"]:
-                    visited_filed.add(index+"_"+key+"_"+h["_source"].get(key))
-            if len(list) != 0:
-                nodes.update({index+"_"+inputfeild+"_"+val:list})
+            resultFname = databaseConnection.get_documents_by_regex(index=index, feild=inputfeild, val=val)
         else:
-            resultFname = databaseConnection.get_documents3(index=index,feild=inputfeild,val=val)
-            hitsFname = resultFname.get("hits", {}).get("hits", [])
-            for h in hitsFname:
-                list.append(h.get("_source"))
-                for key in h["_source"]:
-                    chekcduplicateData(nodes,h["_source"])
-                    visited_filed.add(index+"_"+key+"_"+h["_source"].get(key))
-            if len(list) != 0:
-                nodes.update({index+"_"+inputfeild+"_"+val:list})
+            resultFname = databaseConnection.get_documents3(index=index, feild=inputfeild, val=val)
+
+        hitsFname = resultFname.get("hits", {}).get("hits", [])
+        for h in hitsFname:
+            docs.append(h["_source"])
+            for key in h["_source"]:
+                visited_filed.add(index + "_" + key + "_" + str(h["_source"].get(key)))
+
+        if len(docs) != 0:
+            nodes[node_key] = docs
+            if parent:  
+                edge = Edge(
+                    id=str(uuid.uuid4()),
+                    source=parent,
+                    target=node_key,
+                    field=inputfeild,
+                    value=val
+                )
+                edges.append(edge)
+
         for l in hitsFname:
             for fild in l["_source"].keys():
                 if fild != inputfeild:
-                    #print(fild,l["_source"])
-                    #print(index,"key:",inputfeild,"value:",val, "---------->","new_field data",fild,":",l["_source"].get(fild))
-                    test(inputfeild=fild,val=l["_source"].get(fild),visited=visited_filed.copy())
+                    test(
+                        inputfeild=fild,
+                        val=l["_source"].get(fild),
+                        visited=visited_filed.copy(),
+                        parent=node_key
+                    )
 
 
-test(inputfeild="Fname",val="i",visited=visited_filed.copy())
+
+test(inputfeild="Fname", val="i", visited=visited_filed.copy())
+
+print("Nodes:")
+for i in nodes:
+    print(i, nodes[i])
+    
+print("\nEdges:")
+for e in edges:
+    print(e)

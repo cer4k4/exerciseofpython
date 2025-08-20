@@ -1,28 +1,5 @@
 import random
-# def create_chees(num):
-#     list = []
-#     for n in range(num):
-#         sublist = []
-#         for index,value in enumerate(range(num)):
-#             sublist.append("x")
-#             if len(sublist) != num:
-#                 sublist.insert(index+1,".")
-#         list.append(sublist)
-#     return list
 
-# def negetive_itrate_list(index,list):
-#     list[index] = "."
-
-# number = int(input())
-# result = create_chees(number)
-# for r in result:
-#     print(r)  
-
-
-
-
-
-#num = int(input())
 masterList = []
 number = 4
 def create_master_and_queen(number:int,masterList:list):
@@ -40,15 +17,26 @@ def createhomes(input,number):
         if type(value) == list:
             for c in range(number):
                 if len(value) < number:
-                    value.append("")
+                    value.append(" ")
             
-def put_first_queen(index:int,list1:list,masterList:list[list]):
-    list1[index]="Q"
-    for numberlist,m in enumerate(masterList):
-        for indexdata,val in enumerate(m):
-            if val != "Q":
-                m[indexdata]="*"
 
+def put_first_queen(index:int, list1:list, masterList:list[list]):
+    col = index - 1
+    list1[col] = "Q"
+    
+    for row, m in enumerate(masterList):
+        if row == 0:
+            for c in range(len(m)):
+                if c != col:
+                    m[c] = "*"   
+        else:
+            m[col] = "*"
+            left = col - row
+            if 0 <= left < len(m):
+                m[left] = "*"
+            right = col + row
+            if 0 <= right < len(m):
+                m[right] = "*"
 
 
 
@@ -56,14 +44,41 @@ def put_first_queen(index:int,list1:list,masterList:list[list]):
 dice_roll = random.randint(1, number)
 createhomes(masterList,number)
 
+
 put_first_queen(dice_roll,masterList[0],masterList)
 
+listnullvalue = dict()
+def givenullhouse(masterList:list):
+    for il,list in enumerate(masterList):
+        nulls = []
+        for index,val in enumerate(list):
+            if val == " ":
+                nulls.append(index)
+        listnullvalue.update({il:nulls})
+givenullhouse(masterList)
 
-def BeautifulPrint(masterList:list):
+
+for n in listnullvalue:
+    if listnullvalue.get(n):
+        if len(listnullvalue.get(n)) > 1:
+            for s in listnullvalue.get(n):
+                print(s,n)
+        else:
+            val = listnullvalue.get(n)
+            print(val[0])
+            
+
+
+
+
+def beautifulPrint():
     for list in masterList:
         print(list)
 
-BeautifulPrint(masterList)
 
-
+beautifulPrint()
+print(listnullvalue)
 #print("master",masterList)
+
+
+

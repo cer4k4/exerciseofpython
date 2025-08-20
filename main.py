@@ -607,7 +607,8 @@ def test(inputfeild, val, visited, parent=None, req={}):
                         parent=node_key
                     )
 
-def test(inputfeild, val, visited, parent=None, req={}):
+
+def search_field(inputfeild, val, visited, parent=None, req={}):
     current_key = inputfeild + "_" + str(val)
     if current_key in visited:
         return
@@ -624,6 +625,7 @@ def test(inputfeild, val, visited, parent=None, req={}):
         else:
             resultFname = databaseConnection.get_documents3(index=index, feild=inputfeild, val=val)
         
+
         hitsFname = resultFname.get("hits", {}).get("hits", [])
         for h in hitsFname:
             docs.append(h["_source"])
@@ -642,7 +644,6 @@ def test(inputfeild, val, visited, parent=None, req={}):
                 )
                 edges.append(edge)
 
-        # نکته اصلی: حالا همه‌ی فیلدهای جدیدی که پیدا شد رو دوباره روی کل ایندکس‌ها بگرد
         for l in hitsFname:
             for fild, fval in l["_source"].items():
                 if fild != inputfeild:  

@@ -35,24 +35,26 @@ def create_master_and_queen(number:int,masterList:list):
 create_master_and_queen(4,masterList)
 
 
-def createhome(input,number):
+def createhomes(input,number):
     for l,value in enumerate(input):
         if type(value) == list:
             for c in range(number):
                 if len(value) < number:
                     value.append("")
             
-def put_first_queen(index:int,list:list):
-    list.insert(index,"Q")
+def put_first_queen(index:int,list1:list,masterList:list):
+    list1.pop()
+    list1.insert(index,"Q")
+
+
+
 
 
 
 dice_roll = random.randint(1, number)
-print(f"You rolled a {dice_roll}")
+createhomes(masterList,number)
 
-createhome(masterList,number)
-
-put_first_queen(dice_roll,masterList[0])
+put_first_queen(dice_roll,masterList[0],masterList)
 
 
 def BeautifulPrint(masterList:list):
@@ -60,4 +62,6 @@ def BeautifulPrint(masterList:list):
         print(list)
 
 BeautifulPrint(masterList)
+
+
 #print("master",masterList)

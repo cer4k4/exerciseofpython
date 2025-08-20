@@ -42,10 +42,12 @@ def createhomes(input,number):
                 if len(value) < number:
                     value.append("")
             
-def put_first_queen(index:int,list1:list,masterList:list):
-    list1.pop()
-    list1.insert(index,"Q")
-
+def put_first_queen(index:int,list1:list,masterList:list[list]):
+    list1[index]="Q"
+    for numberlist,m in enumerate(masterList):
+        for indexdata,val in enumerate(m):
+            if val != "Q":
+                m[indexdata]="*"
 
 
 

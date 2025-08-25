@@ -1,87 +1,88 @@
 import random
-print("input you're number")
-masterList = []
 
-number = int(input())
 
-    
+number = int(input("input you're number: "))
 
-if number >=4:
-    print("khar.... khoroji dare")
-    def create_master_and_queen(number:int, masterList:list):
+
+class NQueen():
+    def __init__(self, number):
+        self.master_list = list()
+        self.number = number
+        if self.number >= 4:
+            print("khar.... khoroji dare")
+        elif self.number <= 0:
+            print("khar.... add bozorg tar vared kon")
+        else:
+            print("khar.... zir 4 khoroji nadare")
+
+    def create_master_and_queen(self, number: int, master_list: list):
         if number == 0:
             return
-        sublist = []
-        masterList.append(sublist)
-        create_master_and_queen(number-1, masterList)
-    
-    def createhomes(input, number):
-        for l, value in enumerate(input):
+        sub_list = []
+        master_list.append(sub_list)
+        self.create_master_and_queen(number-1, master_list)
+
+    def create_homes(self, master_list, number):
+        for master_index, value in enumerate(master_list):
             if type(value) == list:
-                for c in range(number):
+                for _ in range(number):
                     if len(value) < number:
                         value.append(" ")
-    
-    def mark_attacks(row, col, masterList):
-        n = len(masterList)
+
+    def mark_attacks(self, row, col, master_list):
+        n = len(master_list)
         for c in range(n):
-            if c != col and masterList[row][c] == " ":
-                masterList[row][c] = "*"
+            if c != col and master_list[row][c] == " ":
+                master_list[row][c] = "*"
         for r in range(row+1, n):
-            # همان ستون
-            if masterList[r][col] == " ":
-                masterList[r][col] = "*"
-            # قطر چپ
+            # itrate column
+            if master_list[r][col] == " ":
+                master_list[r][col] = "*"
+            # left
             left = col - (r - row)
-            if 0 <= left < n and masterList[r][left] == " ":
-                masterList[r][left] = "*"
-            # قطر راست
+            if 0 <= left < n and master_list[r][left] == " ":
+                master_list[r][left] = "*"
+            # right
             right = col + (r - row)
-            if 0 <= right < n and masterList[r][right] == " ":
-                masterList[r][right] = "*"
-    
-    def is_safe(masterList, row, col):
-        return masterList[row][col] == " "
-    
-    def solve_nqueens(masterList, row=0):
-        n = len(masterList)
+            if 0 <= right < n and master_list[r][right] == " ":
+                master_list[r][right] = "*"
+
+    def is_safe(self, master_list, row, col):
+        return master_list[row][col] == " "
+
+    def solve_nqueens(self, master_list, row=0):
+        n = len(master_list)
         if row == n:
-            return True  # همه ملکه‌ها گذاشته شدن
-        
+            return True  # Put Q
         cols = list(range(n))
-        random.shuffle(cols)  # ستون‌ها رو رندوم می‌کنیم
-        
+        random.shuffle(cols)
         for col in cols:
-            if is_safe(masterList, row, col):
-                # کپی از صفحه می‌گیریم (برای بک‌ترکینگ)
-                snapshot = [r.copy() for r in masterList]
-                
-                masterList[row][col] = "Q"
-                mark_attacks(row, col, masterList)
-                
-                if solve_nqueens(masterList, row+1):
+            if self.is_safe(master_list, row, col):
+                snapshot = [r.copy() for r in master_list]
+                master_list[row][col] = "Q"
+                self.mark_attacks(row, col, master_list)
+                if self.solve_nqueens(master_list, row+1):
                     return True
-                
-                # بک‌ترک: برگردیم به حالت قبلی
                 for r in range(n):
-                    masterList[r] = snapshot[r]
-        
+                    master_list[r] = snapshot[r]
         return False
-    
-    def beautifulPrint():
-        for row in masterList:
+
+    def beautiful_print(self, master_list):
+        for row in master_list:
             print(row)
         print()
-    
-    # ----------- اجرای برنامه ----------
-    masterList.clear()
-    create_master_and_queen(number, masterList)
-    createhomes(masterList, number)
-    
-    solve_nqueens(masterList, 0)
-    print("inam khoroji")
-    beautifulPrint()
-elif number <= 0:
-    print("khar.... add bozorg tar vared kon")
-else:
-    print("khar.... zir 4 khoroji nadare")
+
+    def solve(self):
+        self.master_list.clear()
+        try:
+            self.create_master_and_queen(
+                number=self.number, master_list=self.master_list)
+            self.create_homes(number=self.number, master_list=self.master_list)
+            self.solve_nqueens(master_list=self.master_list, row=0)
+            self.beautiful_print(master_list=self.master_list)
+        except Exception as error_msg:
+            print("error message: ", str(error_msg))
+
+
+n_queen_obj = NQueen(number=number)
+n_queen_obj.solve()

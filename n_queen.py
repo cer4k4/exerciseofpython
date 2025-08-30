@@ -33,19 +33,19 @@ class NQueen():
         n = len(master_list)
         for c in range(n):
             if c != col and master_list[row][c] == " ":
-                master_list[row][c] = "*"
+                master_list[row][c] = "-"
         for r in range(row+1, n):
             # itrate column
             if master_list[r][col] == " ":
-                master_list[r][col] = "*"
+                master_list[r][col] = "-"
             # left
             left = col - (r - row)
             if 0 <= left < n and master_list[r][left] == " ":
-                master_list[r][left] = "*"
+                master_list[r][left] = "-"
             # right
             right = col + (r - row)
             if 0 <= right < n and master_list[r][right] == " ":
-                master_list[r][right] = "*"
+                master_list[r][right] = "-"
 
     def is_safe(self, master_list, row, col):
         return master_list[row][col] == " "
@@ -53,13 +53,13 @@ class NQueen():
     def solve_nqueens(self, master_list, row=0):
         n = len(master_list)
         if row == n:
-            return True  # Put Q
+            return True  # Put ♛
         cols = list(range(n))
         random.shuffle(cols)
         for col in cols:
             if self.is_safe(master_list, row, col):
                 snapshot = [r.copy() for r in master_list]
-                master_list[row][col] = "Q"
+                master_list[row][col] = "♛"
                 self.mark_attacks(row, col, master_list)
                 if self.solve_nqueens(master_list, row+1):
                     return True
@@ -75,14 +75,14 @@ class NQueen():
     def solve(self):
         self.master_list.clear()
         try:
-            self.create_master_and_queen(
-                number=self.number, master_list=self.master_list)
+            self.create_master_and_queen(number=self.number, master_list=self.master_list)
             self.create_homes(number=self.number, master_list=self.master_list)
             self.solve_nqueens(master_list=self.master_list, row=0)
             self.beautiful_print(master_list=self.master_list)
         except Exception as error_msg:
             print("error message: ", str(error_msg))
 
-
 n_queen_obj = NQueen(number=number)
 n_queen_obj.solve()
+
+print("")

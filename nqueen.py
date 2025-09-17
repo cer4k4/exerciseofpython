@@ -16,18 +16,18 @@ class NQueen():
             print("khar.... zir 4 khoroji nadare")
 
     def create_master_and_queen(self, number: int, master_list: list):
-        if number == 0:
-            return
-        sub_list = []
-        master_list.append(sub_list)
+        if number == 0:                                                     
+            return                                                          
+        sub_list = []                                                       
+        master_list.append(sub_list)                                   
         self.create_master_and_queen(number-1, master_list)
 
     def create_homes(self, master_list, number):
-        for master_index, value in enumerate(master_list):
-            if type(value) == list:
+        for sub_list in master_list:
+            if type(sub_list) == list:
                 for _ in range(number):
-                    if len(value) < number:
-                        value.append(" ")
+                    if len(sub_list) < number:
+                        sub_list.append(" ")
 
     def mark_attacks(self, row, col, master_list):
         n = len(master_list)
@@ -40,12 +40,16 @@ class NQueen():
                 master_list[r][col] = "-"
             # left
             left = col - (r - row)
+
             if 0 <= left < n and master_list[r][left] == " ":
                 master_list[r][left] = "-"
             # right
             right = col + (r - row)
             if 0 <= right < n and master_list[r][right] == " ":
                 master_list[r][right] = "-"
+        #self.beautiful_print(master_list)
+        #print(n,row)
+
 
     def is_safe(self, master_list, row, col):
         return master_list[row][col] == " "
@@ -65,13 +69,13 @@ class NQueen():
                     return True
                 for r in range(n):
                     master_list[r] = snapshot[r]
+        print("      Not True     ")
+        self.beautiful_print(master_list)
         return False
 
     def beautiful_print(self, master_list):
         for row in master_list:
             print(row)
-        print()
-
     def solve(self):
         self.master_list.clear()
         try:
@@ -84,5 +88,3 @@ class NQueen():
 
 n_queen_obj = NQueen(number=number)
 n_queen_obj.solve()
-
-print("")

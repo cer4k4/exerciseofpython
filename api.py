@@ -22,5 +22,7 @@ def solve_nqueen(req: NQueenRequest):
     nqueen.create_master_and_queen(number=req.number, master_list=nqueen.master_list)
     nqueen.create_homes(number=req.number, master_list=nqueen.master_list)
     nqueen.solve_nqueens(master_list=nqueen.master_list, row=0)
+    print("       Found     ")
+    nqueen.beautiful_print(master_list=nqueen.master_list)
     return {"solution": nqueen.master_list}
 1
